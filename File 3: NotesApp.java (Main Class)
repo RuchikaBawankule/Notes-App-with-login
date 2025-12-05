@@ -1,0 +1,79 @@
+import java.util.*;
+
+public class NotesApp {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        NotesDAO dao = new NotesDAO();
+
+        System.out.println("=== NOTES APP WITH LOGIN ===");
+
+        System.out.println("1. Register");
+        System.out.println("2. Login");
+        System.out.print("Choose: ");
+        int opt = sc.nextInt();
+        sc.nextLine(); 
+
+        int userId = -1;
+
+        if(opt == 1){
+            System.out.print("Enter Username: ");
+            String u = sc.nextLine();
+
+            System.out.print("Enter Password: ");
+            String p = sc.nextLine();
+
+            if(dao.register(u,p))
+                System.out.println("Registration Successful!");
+            else
+                System.out.println("Registration Failed!");
+
+            return;
+        }
+
+        else if(opt == 2){
+            System.out.print("Enter Username: ");
+            String u = sc.nextLine();
+
+            System.out.print("Enter Password: ");
+            String p = sc.nextLine();
+
+            userId = dao.login(u,p);
+
+            if(userId == -1){
+                System.out.println("Invalid Login!");
+                return;
+            }
+            System.out.println("Login Successful!");
+        }
+
+        while(true){
+            System.out.println("\n1. Add Note");
+            System.out.println("2. View Notes");
+            System.out.println("3. Exit");
+            System.out.print("Choose: ");
+            int ch = sc.nextInt();
+            sc.nextLine();
+
+            if(ch == 1){
+                System.out.print("Title: ");
+                String t = sc.nextLine();
+
+                System.out.print("Content: ");
+                String c = sc.nextLine();
+
+                if(dao.addNote(userId, t, c))
+                    System.out.println("Note Added!");
+                else
+                    System.out.println("Failed!");
+            }
+            else if(ch == 2){
+                ArrayList<String> notes = dao.getNotes(userId);
+                for(String n : notes){
+                    System.out.println("\n" + n);
+                }
+            }
+            else break;
+        }
+    }
+}
